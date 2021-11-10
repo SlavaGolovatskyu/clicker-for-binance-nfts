@@ -12,7 +12,7 @@ def parseActiveMysteryBoxList(req: requests.Response) -> list:
         if not name['status']:
             res = {
                 'Name': name['name'], 'Price': str(name['price']) + ' ' + str(name['currency']),
-                'ProductID': name['productId'], 'Start': int(str(name['startTime']))
+                'ProductID': name['productId'], 'Start': name['startTime']
             }
             nfts.append(res)
     return nfts
