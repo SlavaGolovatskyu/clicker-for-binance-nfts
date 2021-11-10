@@ -6,18 +6,23 @@ def getActiveMysteryBox(page=1, size=15) -> requests.Response:
 
 
 def parseActiveMysteryBoxList(req: requests.Response) -> list:
-    r = req.json()
     nfts = []
-    for name in r['data']:
-        if not name['status']:
-            res = {
-                'Name': name['name'], 'Price': str(name['price']) + ' ' + str(name['currency']),
-                'ProductID': name['productId'], 'Start': name['startTime']
-            }
-            nfts.append(res)
+    if req.status_code != 200:
+        print('Ошибка парсинга. Попробуйте еще раз. Останавливаем скрипт.')
+    else:
+        r = req.json()
+        for name in r['data']:
+            # if status == 0 then nft active
+            # else unactive
+            if not name['status']:
+                res = {
+                    'Name': name['name'], 'Price': str(name['price']) + ' ' + name['currency'],
+                    'ProductID': name['productId'], 'Start': name['startTime']
+                }
+                nfts.append(res)
     return nfts
 
-test = parseActiveMysteryBoxList(getActiveMysteryBox())
+# test = parseActiveMysteryBoxList(getActiveMysteryBox())
 
 # old = str(test[0]['Start'])[:10]
 # new = str(int(datetime.now().timestamp()))
