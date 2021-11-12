@@ -1,9 +1,12 @@
 import requests
+from datetime import datetime
+from keyboard import is_pressed
+
 
 def getActiveMysteryBox(page=1, size=15) -> requests.Response:
     r = requests.get(f"https://www.binance.com/bapi/nft/v1/public/nft/mystery-box/list?page={page}&size={size}")
     return r
-
+ 
 
 def parseActiveMysteryBoxList(req: requests.Response) -> list:
     nfts = []
@@ -21,6 +24,19 @@ def parseActiveMysteryBoxList(req: requests.Response) -> list:
                 }
                 nfts.append(res)
     return nfts
+
+
+def waitToStart(nfts: list):
+    if list:
+        old = int(str(nfts[0]['Start'])[:10])
+        new = int(datetime.now().timestamp())
+
+        while (old - new) >= 3:
+            if is_pressed('ctrl+k'):
+                print('Скрипт успешно остановлен')
+                return
+            new = int(datetime.now().timestamp())
+            print(old - new, 'секунд осталось!')
 
 # test = parseActiveMysteryBoxList(getActiveMysteryBox())
 

@@ -5,7 +5,8 @@ from pyautogui import click
 
 from active_ms_boxes import (
     parseActiveMysteryBoxList,
-    getActiveMysteryBox
+    getActiveMysteryBox,
+    waitToStart
 )
 
 def move_mouse_to(coordinates: list) -> None:
@@ -19,20 +20,7 @@ def move_mouse_to(coordinates: list) -> None:
 
     if test:
         # old = int(datetime.now().timestamp() + 5)
-        try:
-            old = int(str(test[0]['Start'])[:10])
-        except IndexError:
-            print('На данный момент никаких нфт нету. Останавливаем скрипт.')
-            return 
-        
-        new = int(datetime.now().timestamp())
-
-        while new < old:
-            if is_pressed('ctrl+k'):
-                print('Скрипт успешно остановлен')
-                return
-            new = int(datetime.now().timestamp())
-            print(int(old) - int(new), 'секунд осталось!')
+        waitToStart(test)
         # cycle for all coords
         # function click() take 2 args 
         # x, y = width, height in px
